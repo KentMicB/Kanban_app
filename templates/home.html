@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kanban App - Home</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 40px 60px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    max-width: 400px;
+    width: 90%;
+  }
+  h2 {
+    margin-bottom: 24px;
+    font-weight: 700;
+    font-size: 2.5rem;
+  }
+  .btn-group a {
+    display: inline-block;
+    margin: 0 12px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #667eea;
+    background-color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+  }
+  .btn-group a:hover {
+    background-color: #5a67d8;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(90,103,216,0.6);
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome to Kanban App</h2>
+    <div class="btn-group">
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('signup') }}">Sign Up</a>
+    </div>
+  </div>
+</body>
+</html>

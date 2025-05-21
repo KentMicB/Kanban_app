@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Members Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; 
+            padding: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #f0f0f5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: fixed;
+            top: 0; 
+            width: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        .navbar .icon {
+            display: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            margin-right: 12px;
+        }
+        .hamburger {
+            width: 26px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .hamburger div {
+            height: 3px;
+            background-color: #ddd;
+            border-radius: 3px;
+            transition: background-color 0.25s ease;
+        }
+        .navbar a {
+            color: #ddd;
+            padding: 14px 18px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+            border-radius: 6px;
+        }
+        .navbar a:hover,
+        .navbar a:focus {
+            background-color: #5a67d8;
+            color: #fff;
+            outline: none;
+        }
+        .navbar .nav-links {
+            display: flex;
+            flex-grow: 1;
+            justify-content: flex-start;
+        }
+        /* Responsive Nav */
+        @media screen and (max-width:600px) {
+            .navbar .nav-links a:not(:first-child) {
+                display: none;
+            }
+            .navbar .icon {
+                display: block;
+            }
+            .navbar.responsive {
+                flex-wrap: wrap;
+                align-items: flex-start;
+                height: auto;
+            }
+            .navbar.responsive .nav-links {
+                width: 100%;
+                display: block;
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 0 0 12px 12px;
+                padding-bottom: 8px;
+            } 
+            .navbar.responsive .nav-links a {
+                display: block;
+                padding: 14px 24px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                font-weight: 600;
+            }
+        }
+
+        /* Content */
+        .content {
+            margin-top: 70px;
+            padding: 32px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            max-width: 840px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            user-select: none;
+        }
+        .content h2 {
+            margin-top: 0;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        /* Member list */
+        .member-list {
+            margin-top: 28px;
+            padding: 0;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;            
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
+        }
+        .assign-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e8e8ff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+        }
+        .assign-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Assign Task */
+        .add-task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .add-task label {
+            font-size: 0.9rem;
+            color: #cfd8ff;
+            min-width: 80px;
+            display: block;
+            user-select: text;
+        }
+        .add-task select {
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #555688;
+            color: #f3f4ff;
+            box-shadow: 0 0 6px rgba(86, 90, 120, 0.8);
+            transition: background-color 0.25s ease, box-shadow 0.3s ease;
+            min-width: 180px;
+        }
+        .add-task select:focus {
+            outline: none;
+            background-color: #6c73b9;
+            box-shadow: 0 0 10px #7182e6;
+            color: #eff2ff;
+        }
+        .add-task button[type="submit"] {
+            background-color: #4CAF50;
+            color: #e9f5f1;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(46, 142, 48, 0.7);
+            transition: background-color 0.3s ease, transform 0.15s ease;
+            user-select: none;
+        }
+        .add-task button[type="submit"]:hover,
+        .add-task button[type="submit"]:focus {
+            background-color: #3da240;
+            outline: none;
+            transform: scale(1.05);
+        }
+
+        button:focus,
+        a:focus,
+        select:focus {
+            outline-offset: 4px;
+            outline: 3px solid #7182e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar" id="myNavbar" role="navigation" aria-label="Main navigation">
+    <div class="icon" onclick="toggleNav()" aria-label="Toggle navigation menu" role="button" tabindex="0" onkeydown="if(event.key==='Enter' || event.key===' ') toggleNav();">
+        <div class="hamburger" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="nav-links">
+        <a href="/dashboard" tabindex="0">Members</a>
+        <a href="/assign_task" tabindex="0">Assign Tasks</a>  <!-- Corrected URL -->
+        <a href="/your_task" tabindex="0">Tasks</a>   
+        <a href="/task_history" tabindex="0">Task History</a>
+        <a href="/logout" tabindex="0">Logout</a>
+    </div>
+</div>
+
+<div class="content" role="main" tabindex="-1">
+    <h2>Welcome to the Members Dashboard, {{ current_user.username }}</h2>
+    <div class="member-list" aria-label="List of members and task assignment">
+        <h3 class="sr-only">Members List</h3>
+        {% for member in members %}
+            <div class="assign-item" role="group" aria-labelledby="member-label-{{ member.id }}">
+                <span id="member-label-{{ member.id }}">{{ member.username }}</span>
+                {% if current_user.is_leader %}
+                    <div class="add-task">
+                        <form action="/assign_task" method="POST" 
+                        onsubmit="return validateForm(this);" 
+                        aria-labelledby="assign-task-label-{{ member.id }}">
+                            <label for="task-select-{{ member.id }}" id="assign-task-label-{{ member.id }}">Assign Task:</label>
+                            <select id="task-select-{{ member.id }}" name="task_id" required aria-required="true" aria-describedby="task-help-{{ member.id }}">
+                                <option value="" disabled selected>Select a task</option>
+                                {% for task in tasks %}
+                                    <option value="{{ task.id }}">{{ task.title }}</option>
+                                {% endfor %}
+                            </select>
+                            <div id="task-help-{{ member.id }}" class="sr-only">Select a task to assign to {{ member.username }}</div>
+                            <input type="hidden" name="member_id" value="{{ member.id }}">
+                            <button type="submit">Assign Task</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="hamburger-menu" id="hamburgerMenu" style="display: none;">
+    <h3>Assign Tasks</h3>
+    {% for member in members %}
+        <div class="assign-item" role="group" aria-labelledby="member-label-{{ member.id }}">
+            <span id="member-label-{{ member.id }}">{{ member.username }}</span>
+            <form action="/assign_task" method="POST" onsubmit="return validateForm(this);" aria-labelledby="assign-task-label-{{ member.id }}">
+                <label for="task-select-{{ member.id }}" id="assign-task-label-{{ member.id }}">Assign Task:</label>
+                <select id="task-select-{{ member.id }}" name="task_id" required aria-required="true" aria-describedby="task-help-{{ member.id }}">
+                    <option value="" disabled selected>Select a task</option>
+                    {% for task in tasks %}
+                        <option value="{{ task.id }}">{{ task.title }}</option>
+                    {% endfor %}
+                </select>
+                <div id="task-help-{{ member.id }}" class="sr-only">Select a task to assign to {{ member.username }}</div>
+                <input type="hidden" name="member_id" value="{{ member.id }}">
+                <button type="submit">Assign Task</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    function validateForm(form) {
+        const taskSelect = form.querySelector('select[name="task_id"]');
+        if (!taskSelect.value) {
+            alert('Please select a task to assign.');
+            taskSelect.focus();
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+
+    function toggleNav() {
+        const navbar = document.getElementById('myNavbar');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        if (navbar.classList.contains('responsive')) {
+            navbar.classList.remove('responsive');
+            hamburgerMenu.style.display = 'none'; // Hide the hamburger menu
+        } else {
+            navbar.classList.add('responsive');
+            hamburgerMenu.style.display = 'block'; // Show the hamburger menu
+        }
+    }
+</script>
+
+</body>
+</html>

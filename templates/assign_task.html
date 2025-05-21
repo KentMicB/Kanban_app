@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Assign Tasks</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; 
+            padding: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #f0f0f5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: fixed;
+            top: 0; 
+            width: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        .navbar a {
+            color: #ddd;
+            padding: 14px 18px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+            border-radius: 6px;
+        }
+        .navbar a:hover,
+        .navbar a:focus {
+            background-color: #5a67d8;
+            color: #fff;
+            outline: none;
+        }
+       
+        .content {
+            margin-top: 70px;
+            padding: 32px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            max-width: 840px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            user-select: none;
+        }
+        .content h2 {
+            margin-top: 0;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+      
+        .member-list {
+            margin-top: 28px;
+            padding: 0;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
+        }
+        .assign-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e8e8ff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+        }
+        .assign-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 12px 12px;
+        }
+        /* Assign Task */
+        .add-task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .add-task label {
+            font-size: 0.9rem;
+            color: #cfd8ff;
+            min-width: 80px;
+            display: block;
+            user-select: text;
+        }
+        .add-task select {
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #555688;
+            color: #f3f4ff;
+            box-shadow: 0 0 6px rgba(86, 90, 120, 0.8);
+            transition: background-color 0.25s ease, box-shadow            0.3s ease;
+            min-width: 180px;
+        }
+        .add-task select:focus {
+            outline: none;
+            background-color: #6c73b9;
+            box-shadow: 0 0 10px #7182e6;
+            color: #eff2ff;
+        }
+        .add-task button[type="submit"] {
+            background-color: #4CAF50;
+            color: #e9f5f1;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(46, 142, 48, 0.7);
+            transition: background-color 0.3s ease, transform 0.15s ease;
+            user-select: none;
+        }
+        .add-task button[type="submit"]:hover,
+        .add-task button[type="submit"]:focus {
+            background-color: #3da240;
+            outline: none;
+            transform: scale(1.05);
+        }
+
+        button:focus,
+        a:focus,
+        select:focus {
+            outline-offset: 4px;
+            outline: 3px solid #7182e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar" id="myNavbar" role="navigation" aria-label="Main navigation">
+    <a href="/dashboard" tabindex="0">Members</a>
+    <a href="/your_task" tabindex="0">Tasks</a>   
+    <a href="/task_history" tabindex="0">Task History</a>
+    <a href="/logout" tabindex="0">Logout</a>
+</div>
+
+<div class="content" role="main" tabindex="-1">
+<h3>Create a New Task</h3>
+<form action="/create_task" method="POST" onsubmit="return validateNewTaskForm();" style="margin-bottom: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <label for="new-task-title" style="color: #cfd8ff;">New Task:</label>
+    <input type="text" id="new-task-title" name="title" required
+           placeholder="Enter task title"
+           style="padding: 6px 14px; border-radius: 8px; border: none; font-size: 1rem; background-color: #555688; color: #f3f4ff; min-width: 200px;" />
+
+    <label for="due-date" style="color: #cfd8ff;">Due Date:</label>
+    <input type="date" id="due-date" name="due_date" required
+           style="padding: 6px 14px; border-radius: 8px; border: none; font-size: 1rem; background-color: #555688; color: #f3f4ff;" />
+
+    <button type="submit"
+            style="background-color: #3182ce; border-radius: 10px; color: white; font-weight: bold; padding: 6px 16px; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+        Add Task
+    </button>
+</form>
+    <div class="member-list" aria-label="List of members and task assignment">
+        <h3 class="sr-only">Members List</h3>
+        {% for member in members %}
+            <div class="assign-item" role="group" aria-labelledby="member-label-{{ member.id }}">
+                <span id="member-label-{{ member.id }}">{{ member.username }}</span>
+                <div class="add-task">
+                    <form action="/assign_task" method="POST" onsubmit="return validateForm(this);" aria-labelledby="assign-task-label-{{ member.id }}">
+                        <label for="task-select-{{ member.id }}" id="assign-task-label-{{ member.id }}">Assign Task:</label>
+                        <select id="task-select-{{ member.id }}" name="task_id" required aria-required="true" aria-describedby="task-help-{{ member.id }}">
+                            <option value="" disabled selected>Select a task</option>
+                            {% for task in tasks %}
+                                <option value="{{ task.id }}">{{ task.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="task-help-{{ member.id }}" class="sr-only">Select a task to assign to {{ member.username }}</div>
+                        <input type="hidden" name="member_id" value="{{ member.id }}">
+                        <button type="submit">Assign Task</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function validateNewTaskForm() {
+    const titleInput = document.getElementById('new-task-title');
+    const dueDateInput = document.getElementById('due-date');
+
+    if (!titleInput.value.trim()) {
+        alert("Please enter a task title.");
+        titleInput.focus();
+        return false;
+    }
+
+    if (!dueDateInput.value) {
+        alert("Please select a due date.");
+        dueDateInput.focus();
+        return false;
+    }
+
+    return true;
+}
+    function validateForm(form) {
+        const taskSelect = form.querySelector('select[name="task_id"]');
+        if (!taskSelect.value) {
+            alert('Please select a task to assign.');
+            taskSelect.focus();
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
+
+</body>
+</html>
